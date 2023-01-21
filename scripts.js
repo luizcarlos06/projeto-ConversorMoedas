@@ -1,14 +1,16 @@
 const button = document.getElementById('convert-button')
 const select = document.getElementById('currency-select')
 
-const dollar = 5.2
-const euro = 5.9
-const libra = 6.3
-
-const convertValues = () => {
+const convertValues = async() => {
     const inputReal = document.getElementById('input-real').value
     const realValueText = document.getElementById('real-value-text')
     const currencyValueText = document.getElementById('currency-value-text')
+
+    const data = await fetch("https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL").then(response => response.json())
+    const dollar = data.USDBRL.high
+    const euro = data.EURBRL.high
+
+    console.log(data)
 
     realValueText.innerHTML = new Intl.NumberFormat("pt-BR", {
         style: "currency",
@@ -28,12 +30,6 @@ const convertValues = () => {
             currency: "EUR",
         }).format(inputReal / euro)
     }
-    if(select.value === '£ Libra'){
-        currencyValueText.innerHTML = new Intl.NumberFormat("gb-UK", {
-            style: "currency",
-            currency: "GBP",
-        }).format(inputReal / libra)
-    }
    
 };
 
@@ -49,10 +45,6 @@ changeCurrency = () => {
     if(select.value === '€ Euro'){
         currencyName.innerHTML = '€ Euro'
         currencyImg.src = "Assets/euro.png"
-    }
-    if(select.value === '£ Libra'){
-        currencyName.innerHTML = '£ Libra'
-        currencyImg.src = "Assets/uk.png"
     }
 
     convertValues()
