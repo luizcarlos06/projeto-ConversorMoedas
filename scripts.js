@@ -9,7 +9,7 @@ const convertValues = async() => {
     const data = await fetch("https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL").then(response => response.json())
     const dollar = data.USDBRL.high
     const euro = data.EURBRL.high
-
+    const bitcoins = data.BTCBRL.high
     console.log(data)
 
     realValueText.innerHTML = new Intl.NumberFormat("pt-BR", {
@@ -30,6 +30,12 @@ const convertValues = async() => {
             currency: "EUR",
         }).format(inputReal / euro)
     }
+    if(select.value === '₿ Bitcoins'){
+        currencyValueText.innerHTML = new Intl.NumberFormat("de-DE", {
+            style: "currency",
+            currency: "BTC",
+        }).format(inputReal / bitcoins)
+    }
    
 };
 
@@ -45,6 +51,11 @@ changeCurrency = () => {
     if(select.value === '€ Euro'){
         currencyName.innerHTML = '€ Euro'
         currencyImg.src = "Assets/euro.png"
+    }
+
+    if(select.value === '₿ Bitcoins'){
+        currencyName.innerHTML = '₿ Bitcoins'
+        currencyImg.src = "Assets/bitcoins.png"
     }
 
     convertValues()
